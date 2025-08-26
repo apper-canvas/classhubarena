@@ -1,52 +1,177 @@
-import gradesData from "@/services/mockData/grades.json";
+const { ApperClient } = window.ApperSDK;
 
-const grades = [...gradesData];
-
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const apperClient = new ApperClient({
+  apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+  apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+});
 
 export const gradeService = {
   async getAll() {
-    await delay(300);
-    return [...grades];
+    try {
+      const params = {
+        fields: [
+          { field: { Name: "studentId_c" } },
+          { field: { Name: "assignmentId_c" } },
+          { field: { Name: "score_c" } },
+          { field: { Name: "submittedDate_c" } }
+        ]
+      };
+      
+      const response = await apperClient.fetchRecords("grade_c", params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+      
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching grades:", error?.response?.data?.message || error.message);
+      throw error;
+    }
   },
 
   async getById(id) {
-    await delay(200);
-    const grade = grades.find(g => g.Id === id);
-    if (!grade) {
-      throw new Error("Grade not found");
+    try {
+      const params = {
+        fields: [
+          { field: { Name: "studentId_c" } },
+          { field: { Name: "assignmentId_c" } },
+          { field: { Name: "score_c" } },
+          { field: { Name: "submittedDate_c" } }
+        ]
+      };
+      
+      const response = await apperClient.getRecordById("grade_c", id, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+      
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching grade with ID ${id}:`, error?.response?.data?.message || error.message);
+      throw error;
     }
-    return { ...grade };
   },
 
   async create(gradeData) {
-    await delay(400);
-    const newGrade = {
-      Id: Math.max(...grades.map(g => g.Id)) + 1,
-      ...gradeData,
-      submittedDate: new Date().toISOString()
-    };
-    grades.push(newGrade);
-    return { ...newGrade };
+    try {
+      const params = {
+        records: [{
+          studentId_c: parseInt(gradeData.studentId_c || gradeData.studentId),
+          assignmentId_c: parseInt(gradeData.assignmentId_c || gradeData.assignmentId),
+          score_c: parseFloat(gradeData.score_c || gradeData.score),
+          submittedDate_c: gradeData.submittedDate_c || gradeData.submittedDate || new Date().toISOString()
+        }]
+      };
+      
+      const response = await apperClient.createRecord("grade_c", params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+      
+      if (response.results) {
+        const successfulRecords = response.results.filter(result => result.success);
+        const failedRecords = response.results.filter(result => !result.success);
+        
+        if (failedRecords.length > 0) {
+          console.error(`Failed to create grade records:${JSON.stringify(failedRecords)}`);
+          failedRecords.forEach(record => {
+            if (record.message) throw new Error(record.message);
+          });
+        }
+        
+        return successfulRecords[0]?.data;
+      }
+    } catch (error) {
+      console.error("Error creating grade:", error?.response?.data?.message || error.message);
+      throw error;
+    }
   },
 
   async update(id, gradeData) {
-    await delay(350);
-    const index = grades.findIndex(g => g.Id === id);
-    if (index === -1) {
-      throw new Error("Grade not found");
+    try {
+      const updateData = {
+        Id: id
+      };
+      
+      // Only include updateable fields
+      if (gradeData.studentId_c !== undefined || gradeData.studentId !== undefined) {
+        updateData.studentId_c = parseInt(gradeData.studentId_c || gradeData.studentId);
+      }
+      if (gradeData.assignmentId_c !== undefined || gradeData.assignmentId !== undefined) {
+        updateData.assignmentId_c = parseInt(gradeData.assignmentId_c || gradeData.assignmentId);
+      }
+      if (gradeData.score_c !== undefined || gradeData.score !== undefined) {
+        updateData.score_c = parseFloat(gradeData.score_c || gradeData.score);
+      }
+      if (gradeData.submittedDate_c !== undefined || gradeData.submittedDate !== undefined) {
+        updateData.submittedDate_c = gradeData.submittedDate_c || gradeData.submittedDate;
+      }
+      
+      const params = {
+        records: [updateData]
+      };
+      
+      const response = await apperClient.updateRecord("grade_c", params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+      
+      if (response.results) {
+        const successfulUpdates = response.results.filter(result => result.success);
+        const failedUpdates = response.results.filter(result => !result.success);
+        
+        if (failedUpdates.length > 0) {
+          console.error(`Failed to update grade records:${JSON.stringify(failedUpdates)}`);
+          failedUpdates.forEach(record => {
+            if (record.message) throw new Error(record.message);
+          });
+        }
+        
+        return successfulUpdates[0]?.data;
+      }
+    } catch (error) {
+      console.error("Error updating grade:", error?.response?.data?.message || error.message);
+      throw error;
     }
-    grades[index] = { ...grades[index], ...gradeData };
-    return { ...grades[index] };
   },
 
   async delete(id) {
-    await delay(250);
-    const index = grades.findIndex(g => g.Id === id);
-    if (index === -1) {
-      throw new Error("Grade not found");
+    try {
+      const params = {
+        RecordIds: [id]
+      };
+      
+      const response = await apperClient.deleteRecord("grade_c", params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+      
+      if (response.results) {
+        const successfulDeletions = response.results.filter(result => result.success);
+        const failedDeletions = response.results.filter(result => !result.success);
+        
+        if (failedDeletions.length > 0) {
+          console.error(`Failed to delete grade records:${JSON.stringify(failedDeletions)}`);
+          failedDeletions.forEach(record => {
+            if (record.message) throw new Error(record.message);
+          });
+        }
+        
+        return successfulDeletions[0]?.data;
+      }
+    } catch (error) {
+      console.error("Error deleting grade:", error?.response?.data?.message || error.message);
+      throw error;
     }
-    const deleted = grades.splice(index, 1)[0];
-    return { ...deleted };
   }
 };

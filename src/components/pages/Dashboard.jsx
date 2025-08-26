@@ -49,21 +49,22 @@ const Dashboard = () => {
   if (loading) return <Loading type="cards" />;
   if (error) return <Error message={error} onRetry={loadDashboardData} />;
 
-  // Calculate stats
+// Calculate stats
   const totalStudents = students.length;
-  const activeStudents = students.filter(s => s.status === "Active").length;
+  const activeStudents = students.filter(s => (s.status_c || s.status) === "Active").length;
   const totalClasses = classes.length;
   
   // Calculate attendance rate
   const todayAttendance = attendance.filter(a => {
     const today = new Date().toISOString().split("T")[0];
-    return a.date.split("T")[0] === today;
+    const attendanceDate = (a.date_c || a.date);
+    return attendanceDate && attendanceDate.split("T")[0] === today;
   });
-  const presentToday = todayAttendance.filter(a => a.status === "present").length;
+  const presentToday = todayAttendance.filter(a => (a.status_c || a.status) === "present").length;
   const attendanceRate = todayAttendance.length > 0 ? Math.round((presentToday / todayAttendance.length) * 100) : 0;
 
   // Calculate average grade
-  const averageGrade = grades.length > 0 ? Math.round(grades.reduce((sum, g) => sum + g.score, 0) / grades.length) : 0;
+  const averageGrade = grades.length > 0 ? Math.round(grades.reduce((sum, g) => sum + (g.score_c || g.score), 0) / grades.length) : 0;
 
   // Recent activity (mock data based on real data structure)
   const recentActivity = [
@@ -118,12 +119,12 @@ const Dashboard = () => {
           <CardContent>
             <div className="space-y-4">
               {classes.slice(0, 4).map((classItem) => {
-                const classStudents = students.filter(s => s.classId === classItem.Id);
+const classStudents = students.filter(s => (s.classId_c || s.classId) === classItem.Id);
                 const classGrades = grades.filter(g => 
-                  classStudents.some(s => s.Id === g.studentId)
+                  classStudents.some(s => s.Id === (g.studentId_c || g.studentId))
                 );
                 const classAverage = classGrades.length > 0 
-                  ? Math.round(classGrades.reduce((sum, g) => sum + g.score, 0) / classGrades.length)
+                  ? Math.round(classGrades.reduce((sum, g) => sum + (g.score_c || g.score), 0) / classGrades.length)
                   : 0;
                 
                 return (

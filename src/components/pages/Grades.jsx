@@ -56,19 +56,19 @@ const Grades = () => {
     loadData();
   }, []);
 
-  useEffect(() => {
+useEffect(() => {
     if (selectedClassId) {
-      const classStudents = students.filter(s => s.classId === parseInt(selectedClassId));
-      const classAssignments = assignments.filter(a => a.classId === parseInt(selectedClassId));
+      const classStudents = students.filter(s => (s.classId_c || s.classId) === parseInt(selectedClassId));
+      const classAssignments = assignments.filter(a => (a.classId_c || a.classId) === parseInt(selectedClassId));
       setFilteredStudents(classStudents);
       setFilteredAssignments(classAssignments);
     }
   }, [selectedClassId, students, assignments]);
 
-  const handleGradeChange = (studentId, assignmentId, score) => {
+const handleGradeChange = (studentId, assignmentId, score) => {
     setGrades(prevGrades => {
       const existingGradeIndex = prevGrades.findIndex(
-        g => g.studentId === studentId && g.assignmentId === assignmentId
+        g => (g.studentId_c || g.studentId) === studentId && (g.assignmentId_c || g.assignmentId) === assignmentId
       );
       
       if (existingGradeIndex >= 0) {
@@ -76,13 +76,18 @@ const Grades = () => {
         const updatedGrades = [...prevGrades];
         updatedGrades[existingGradeIndex] = {
           ...updatedGrades[existingGradeIndex],
+          score_c: score,
           score: score
         };
         return updatedGrades;
       } else {
         // Add new grade
         const newGrade = {
-          Id: Math.max(...prevGrades.map(g => g.Id)) + 1,
+          Id: Math.max(...prevGrades.map(g => g.Id), 0) + 1,
+          studentId_c: studentId,
+          assignmentId_c: assignmentId,
+          score_c: score,
+          submittedDate_c: new Date().toISOString(),
           studentId: studentId,
           assignmentId: assignmentId,
           score: score,
@@ -130,8 +135,8 @@ const Grades = () => {
         >
           <option value="">Choose a class...</option>
           {classes.map((classItem) => (
-            <option key={classItem.Id} value={classItem.Id}>
-              {classItem.name} - {classItem.subject}
+<option key={classItem.Id} value={classItem.Id}>
+              {classItem.name_c || classItem.name} - {classItem.subject_c || classItem.subject}
             </option>
           ))}
         </Select>

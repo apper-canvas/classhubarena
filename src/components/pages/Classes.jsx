@@ -21,7 +21,7 @@ const Classes = () => {
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     name: "",
     subject: "",
     period: "",
@@ -37,12 +37,12 @@ const Classes = () => {
       return;
     }
 
-    try {
+try {
       const newClass = await classService.create({
-        name: formData.name.trim(),
-        subject: formData.subject.trim(),
-        period: formData.period.trim(),
-        room: formData.room.trim()
+        name_c: formData.name.trim(),
+        subject_c: formData.subject.trim(),
+        period_c: formData.period.trim(),
+        room_c: formData.room.trim()
       });
 
       // Add enrollment count (0 for new class)
@@ -76,10 +76,10 @@ const Classes = () => {
         studentService.getAll()
       ]);
       
-      // Add enrollment count to classes
+// Add enrollment count to classes
       const classesWithEnrollment = classesData.map(classItem => ({
         ...classItem,
-        enrollmentCount: studentsData.filter(s => s.classId === classItem.Id).length
+        enrollmentCount: studentsData.filter(s => (s.classId_c || s.classId) === classItem.Id).length
       }));
       
       setClasses(classesWithEnrollment);
@@ -98,10 +98,10 @@ const Classes = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = classes.filter(classItem => 
-      classItem.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      classItem.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      classItem.period.toLowerCase().includes(searchTerm.toLowerCase())
+const filtered = classes.filter(classItem => 
+      (classItem.name_c || classItem.name).toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (classItem.subject_c || classItem.subject).toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (classItem.period_c || classItem.period).toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredClasses(filtered);
   }, [classes, searchTerm]);
@@ -146,17 +146,17 @@ const Classes = () => {
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div>
-                    <CardTitle className="text-lg">{classItem.name}</CardTitle>
-                    <p className="text-sm text-gray-600 mt-1">{classItem.subject}</p>
+<CardTitle className="text-lg">{classItem.name_c || classItem.name}</CardTitle>
+                    <p className="text-sm text-gray-600 mt-1">{classItem.subject_c || classItem.subject}</p>
                   </div>
-                  <Badge variant="primary">{classItem.period}</Badge>
+                  <Badge variant="primary">{classItem.period_c || classItem.period}</Badge>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Room:</span>
-                    <span className="font-medium">{classItem.room}</span>
+<span className="text-gray-600">Room:</span>
+                    <span className="font-medium">{classItem.room_c || classItem.room}</span>
                   </div>
                   
                   <div className="flex items-center justify-between text-sm">

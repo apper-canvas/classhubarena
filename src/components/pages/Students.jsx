@@ -31,10 +31,10 @@ const Students = () => {
         classService.getAll()
       ]);
       
-      // Add class names to students
+// Add class names to students
       const studentsWithClasses = studentsData.map(student => ({
         ...student,
-        className: classesData.find(c => c.Id === student.classId)?.name || "No Class"
+        className: classesData.find(c => c.Id === (student.classId_c || student.classId))?.name_c || classesData.find(c => c.Id === (student.classId_c || student.classId))?.name || "No Class"
       }));
       
       setStudents(studentsWithClasses);
@@ -52,11 +52,11 @@ const Students = () => {
     loadData();
   }, []);
 
-  useEffect(() => {
+useEffect(() => {
     const filtered = students.filter(student => 
-      `${student.firstName} ${student.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      student.grade.toLowerCase().includes(searchTerm.toLowerCase())
+      `${student.firstName_c || student.firstName} ${student.lastName_c || student.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (student.email_c || student.email).toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (student.grade_c || student.grade).toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredStudents(filtered);
   }, [students, searchTerm]);
@@ -73,8 +73,17 @@ const Students = () => {
 
   const handleSaveStudent = async (studentData) => {
     try {
-      if (selectedStudent) {
-        await studentService.update(selectedStudent.Id, studentData);
+if (selectedStudent) {
+        // Convert field names for database
+        const dbStudentData = {
+          firstName_c: studentData.firstName || studentData.firstName_c,
+          lastName_c: studentData.lastName || studentData.lastName_c,
+          email_c: studentData.email || studentData.email_c,
+          grade_c: studentData.grade || studentData.grade_c,
+          classId_c: studentData.classId || studentData.classId_c,
+          status_c: studentData.status || studentData.status_c
+        };
+        await studentService.update(selectedStudent.Id, dbStudentData);
         toast.success("Student updated successfully!");
       } else {
         await studentService.create(studentData);

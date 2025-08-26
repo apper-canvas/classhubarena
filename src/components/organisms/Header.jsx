@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useSelector } from "react-redux";
 import Button from "@/components/atoms/Button";
 import SearchBar from "@/components/molecules/SearchBar";
 import ApperIcon from "@/components/ApperIcon";
+import { AuthContext } from "../../App";
 
 const Header = ({ onMobileMenuToggle }) => {
+  const { logout } = useContext(AuthContext);
+  const { user } = useSelector((state) => state.user);
   return (
     <header className="h-16 bg-white border-b border-gray-200 shadow-sm flex items-center justify-between px-4 lg:px-6">
       {/* Mobile Menu Button */}
@@ -47,8 +51,22 @@ const Header = ({ onMobileMenuToggle }) => {
             <ApperIcon name="Settings" className="h-5 w-5" />
           </Button>
           
-          <div className="h-8 w-8 bg-gradient-to-r from-primary-500 to-primary-600 rounded-full flex items-center justify-center">
-            <ApperIcon name="User" className="h-4 w-4 text-white" />
+<div className="flex items-center space-x-3">
+            <div className="text-sm text-gray-600">
+              Welcome, {user?.firstName || user?.name || 'User'}
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={logout}
+              className="flex items-center space-x-2"
+            >
+              <ApperIcon name="LogOut" className="h-4 w-4" />
+              <span>Logout</span>
+            </Button>
+            <div className="h-8 w-8 bg-gradient-to-r from-primary-500 to-primary-600 rounded-full flex items-center justify-center">
+              <ApperIcon name="User" className="h-4 w-4 text-white" />
+            </div>
           </div>
         </div>
       </div>

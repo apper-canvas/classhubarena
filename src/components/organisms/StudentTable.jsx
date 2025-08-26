@@ -40,21 +40,21 @@ const StudentTable = ({ students, onEdit, onDelete, onView }) => {
                 >
                   <td className="py-4 px-4">
                     <div className="font-medium text-gray-900">
-                      {student.firstName} {student.lastName}
+{student.firstName_c || student.firstName} {student.lastName_c || student.lastName}
                     </div>
                   </td>
                   <td className="py-4 px-4 text-gray-600">
-                    {student.email}
+{student.email_c || student.email}
                   </td>
                   <td className="py-4 px-4">
-                    <Badge variant="primary">{student.grade}</Badge>
+<Badge variant="primary">{student.grade_c || student.grade}</Badge>
                   </td>
                   <td className="py-4 px-4 text-gray-600">
                     {student.className}
                   </td>
                   <td className="py-4 px-4">
-                    <Badge variant={getStatusVariant(student.status)}>
-                      {student.status}
+<Badge variant={getStatusVariant(student.status_c || student.status)}>
+                      {student.status_c || student.status}
                     </Badge>
                   </td>
                   <td className="py-4 px-4">

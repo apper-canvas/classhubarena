@@ -7,7 +7,7 @@ import ApperIcon from "@/components/ApperIcon";
 
 const GradeMatrix = ({ students, assignments, grades, onGradeChange, onSave }) => {
   const getGrade = (studentId, assignmentId) => {
-    const grade = grades.find(g => g.studentId === studentId && g.assignmentId === assignmentId);
+const grade = grades.find(g => (g.studentId_c || g.studentId) === studentId && (g.assignmentId_c || g.assignmentId) === assignmentId);
     return grade ? grade.score : "";
   };
 
@@ -29,17 +29,17 @@ const GradeMatrix = ({ students, assignments, grades, onGradeChange, onSave }) =
   };
 
   const getStudentAverage = (studentId) => {
-    const studentGrades = grades.filter(g => g.studentId === studentId);
+const studentGrades = grades.filter(g => (g.studentId_c || g.studentId) === studentId);
     if (studentGrades.length === 0) return null;
     
     let totalScore = 0;
     let totalPoints = 0;
     
     studentGrades.forEach(grade => {
-      const assignment = assignments.find(a => a.Id === grade.assignmentId);
+const assignment = assignments.find(a => a.Id === (grade.assignmentId_c || grade.assignmentId));
       if (assignment) {
-        totalScore += grade.score;
-        totalPoints += assignment.totalPoints;
+        totalScore += (grade.score_c || grade.score);
+        totalPoints += (assignment.totalPoints_c || assignment.totalPoints);
       }
     });
     
@@ -72,8 +72,8 @@ const GradeMatrix = ({ students, assignments, grades, onGradeChange, onSave }) =
                 {assignments.map((assignment) => (
                   <th key={assignment.Id} className="text-center py-3 px-4 font-medium text-gray-700 min-w-[120px]">
                     <div className="space-y-1">
-                      <div className="text-sm">{assignment.title}</div>
-                      <div className="text-xs text-gray-500">({assignment.totalPoints} pts)</div>
+<div className="text-sm">{assignment.title_c || assignment.title}</div>
+                      <div className="text-xs text-gray-500">({assignment.totalPoints_c || assignment.totalPoints} pts)</div>
                     </div>
                   </th>
                 ))}
@@ -91,14 +91,14 @@ const GradeMatrix = ({ students, assignments, grades, onGradeChange, onSave }) =
                     className="border-b border-gray-100 hover:bg-gradient-to-r hover:from-gray-50 hover:to-white"
                   >
                     <td className="py-3 px-4 font-medium text-gray-900 sticky left-0 bg-white">
-                      {student.firstName} {student.lastName}
+{student.firstName_c || student.firstName} {student.lastName_c || student.lastName}
                     </td>
                     {assignments.map((assignment) => (
                       <td key={assignment.Id} className="py-3 px-4 text-center">
                         <Input
                           type="number"
                           min="0"
-                          max={assignment.totalPoints}
+max={assignment.totalPoints_c || assignment.totalPoints}
                           value={getGrade(student.Id, assignment.Id)}
                           onChange={(e) => onGradeChange(student.Id, assignment.Id, parseFloat(e.target.value) || 0)}
                           className="w-20 text-center mx-auto"

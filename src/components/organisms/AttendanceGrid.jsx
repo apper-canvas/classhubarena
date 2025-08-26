@@ -11,15 +11,15 @@ const AttendanceGrid = ({ students, attendance, currentDate, onAttendanceChange,
   const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
 
   const getAttendanceStatus = (studentId, date) => {
-    const record = attendance.find(a => 
-      a.studentId === studentId && 
-      isSameDay(new Date(a.date), date)
+const record = attendance.find(a => 
+      (a.studentId_c || a.studentId) === studentId && 
+      isSameDay(new Date(a.date_c || a.date), date)
     );
     return record ? record.status : null;
   };
 
   const getAttendanceStats = (studentId) => {
-    const studentAttendance = attendance.filter(a => a.studentId === studentId);
+const studentAttendance = attendance.filter(a => (a.studentId_c || a.studentId) === studentId);
     const present = studentAttendance.filter(a => a.status === "present").length;
     const total = studentAttendance.length;
     return total > 0 ? Math.round((present / total) * 100) : 0;
@@ -66,7 +66,7 @@ const AttendanceGrid = ({ students, attendance, currentDate, onAttendanceChange,
                   className="border-b border-gray-100 hover:bg-gradient-to-r hover:from-gray-50 hover:to-white"
                 >
                   <td className="py-3 px-4 font-medium text-gray-900 sticky left-0 bg-white">
-                    {student.firstName} {student.lastName}
+{student.firstName_c || student.firstName} {student.lastName_c || student.lastName}
                   </td>
                   {days.slice(0, 15).map((day) => (
                     <td key={day.toISOString()} className="py-3 px-2 text-center">

@@ -53,42 +53,42 @@ const Reports = () => {
   if (error) return <Error message={error} onRetry={loadData} />;
 
   // Calculate statistics
-  const filteredStudents = selectedClassId === "all" 
+const filteredStudents = selectedClassId === "all" 
     ? students 
-    : students.filter(s => s.classId === parseInt(selectedClassId));
+    : students.filter(s => (s.classId_c || s.classId) === parseInt(selectedClassId));
 
-  const totalStudents = filteredStudents.length;
-  const activeStudents = filteredStudents.filter(s => s.status === "Active").length;
+const totalStudents = filteredStudents.length;
+  const activeStudents = filteredStudents.filter(s => (s.status_c || s.status) === "Active").length;
   
-  // Calculate attendance stats
-  const presentRecords = attendance.filter(a => a.status === "present");
+// Calculate attendance stats
+  const presentRecords = attendance.filter(a => (a.status_c || a.status) === "present");
   const totalAttendanceRecords = attendance.length;
   const attendanceRate = totalAttendanceRecords > 0 
     ? Math.round((presentRecords.length / totalAttendanceRecords) * 100) 
     : 0;
 
-  // Calculate grade stats
+// Calculate grade stats
   const averageGrade = grades.length > 0 
-    ? Math.round(grades.reduce((sum, g) => sum + g.score, 0) / grades.length) 
+    ? Math.round(grades.reduce((sum, g) => sum + (g.score_c || g.score), 0) / grades.length) 
     : 0;
 
   // Top performing students
-  const studentGradeAverages = filteredStudents.map(student => {
-    const studentGrades = grades.filter(g => g.studentId === student.Id);
+const studentGradeAverages = filteredStudents.map(student => {
+    const studentGrades = grades.filter(g => (g.studentId_c || g.studentId) === student.Id);
     const average = studentGrades.length > 0 
-      ? studentGrades.reduce((sum, g) => sum + g.score, 0) / studentGrades.length 
+      ? studentGrades.reduce((sum, g) => sum + (g.score_c || g.score), 0) / studentGrades.length 
       : 0;
     return { ...student, average };
   }).sort((a, b) => b.average - a.average);
 
   // Class performance
-  const classPerformance = classes.map(classItem => {
-    const classStudents = students.filter(s => s.classId === classItem.Id);
+const classPerformance = classes.map(classItem => {
+    const classStudents = students.filter(s => (s.classId_c || s.classId) === classItem.Id);
     const classGrades = grades.filter(g => 
-      classStudents.some(s => s.Id === g.studentId)
+      classStudents.some(s => s.Id === (g.studentId_c || g.studentId))
     );
     const average = classGrades.length > 0 
-      ? Math.round(classGrades.reduce((sum, g) => sum + g.score, 0) / classGrades.length)
+      ? Math.round(classGrades.reduce((sum, g) => sum + (g.score_c || g.score), 0) / classGrades.length)
       : 0;
     return { ...classItem, average, studentCount: classStudents.length };
   }).sort((a, b) => b.average - a.average);
@@ -122,9 +122,9 @@ const Reports = () => {
           className="w-64"
         >
           <option value="all">All Classes</option>
-          {classes.map((classItem) => (
+{classes.map((classItem) => (
             <option key={classItem.Id} value={classItem.Id}>
-              {classItem.name} - {classItem.subject}
+              {classItem.name_c || classItem.name} - {classItem.subject_c || classItem.subject}
             </option>
           ))}
         </Select>
@@ -188,10 +188,10 @@ const Reports = () => {
                       #{index + 1}
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">
-                        {student.firstName} {student.lastName}
+<p className="font-medium text-gray-900">
+                        {student.firstName_c || student.firstName} {student.lastName_c || student.lastName}
                       </p>
-                      <p className="text-sm text-gray-600">{student.grade}</p>
+                      <p className="text-sm text-gray-600">{student.grade_c || student.grade}</p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -218,9 +218,9 @@ const Reports = () => {
               {classPerformance.slice(0, 5).map((classItem) => (
                 <div key={classItem.Id} className="flex items-center justify-between p-3 bg-gradient-to-r from-gray-50 to-white rounded-lg">
                   <div>
-                    <p className="font-medium text-gray-900">{classItem.name}</p>
+<p className="font-medium text-gray-900">{classItem.name_c || classItem.name}</p>
                     <p className="text-sm text-gray-600">
-                      {classItem.subject} • {classItem.studentCount} students
+                      {classItem.subject_c || classItem.subject} • {classItem.studentCount} students
                     </p>
                   </div>
                   <div className="flex items-center space-x-3">

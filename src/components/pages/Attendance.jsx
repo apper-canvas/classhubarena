@@ -53,19 +53,20 @@ const Attendance = () => {
     loadData();
   }, []);
 
-  useEffect(() => {
+useEffect(() => {
     if (selectedClassId) {
-      const classStudents = students.filter(s => s.classId === parseInt(selectedClassId));
+      const classStudents = students.filter(s => (s.classId_c || s.classId) === parseInt(selectedClassId));
       setFilteredStudents(classStudents);
     }
   }, [selectedClassId, students]);
 
-  const handleAttendanceChange = (studentId, date, status) => {
+const handleAttendanceChange = (studentId, date, status) => {
     const dateString = date.toISOString().split("T")[0];
     
     setAttendance(prevAttendance => {
       const existingRecordIndex = prevAttendance.findIndex(
-        a => a.studentId === studentId && a.date.split("T")[0] === dateString
+        a => (a.studentId_c || a.studentId) === studentId && 
+        (a.date_c || a.date).split("T")[0] === dateString
       );
       
       if (existingRecordIndex >= 0) {
@@ -73,6 +74,7 @@ const Attendance = () => {
         const updatedAttendance = [...prevAttendance];
         updatedAttendance[existingRecordIndex] = {
           ...updatedAttendance[existingRecordIndex],
+          status_c: status,
           status: status
         };
         return updatedAttendance;
@@ -80,6 +82,10 @@ const Attendance = () => {
         // Add new record
         const newRecord = {
           Id: Math.max(...prevAttendance.map(a => a.Id), 0) + 1,
+          studentId_c: studentId,
+          classId_c: parseInt(selectedClassId),
+          date_c: date.toISOString(),
+          status_c: status,
           studentId: studentId,
           classId: parseInt(selectedClassId),
           date: date.toISOString(),
@@ -135,9 +141,9 @@ const Attendance = () => {
             className="w-64"
           >
             <option value="">Choose a class...</option>
-            {classes.map((classItem) => (
+{classes.map((classItem) => (
               <option key={classItem.Id} value={classItem.Id}>
-                {classItem.name} - {classItem.subject}
+                {classItem.name_c || classItem.name} - {classItem.subject_c || classItem.subject}
               </option>
             ))}
           </Select>
