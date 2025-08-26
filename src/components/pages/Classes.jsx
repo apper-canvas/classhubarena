@@ -97,11 +97,11 @@ try {
     loadData();
   }, []);
 
-  useEffect(() => {
+useEffect(() => {
 const filtered = classes.filter(classItem => 
-      (classItem.name_c || classItem.name).toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (classItem.subject_c || classItem.subject).toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (classItem.period_c || classItem.period).toLowerCase().includes(searchTerm.toLowerCase())
+      ((classItem.name_c || classItem.name) ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ((classItem.subject_c || classItem.subject) ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ((classItem.period_c || classItem.period) ?? "").toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredClasses(filtered);
   }, [classes, searchTerm]);
