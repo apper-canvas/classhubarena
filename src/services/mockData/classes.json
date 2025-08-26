@@ -1,0 +1,44 @@
+[
+  {
+    "Id": 1,
+    "name": "Advanced Mathematics",
+    "subject": "Mathematics",
+    "period": "1st Period",
+    "room": "Room 201"
+  },
+  {
+    "Id": 2,
+    "name": "English Literature",
+    "subject": "English",
+    "period": "2nd Period",
+    "room": "Room 105"
+  },
+  {
+    "Id": 3,
+    "name": "Physics",
+    "subject": "Science",
+    "period": "3rd Period",
+    "room": "Lab 301"
+  },
+  {
+    "Id": 4,
+    "name": "World History",
+    "subject": "Social Studies",
+    "period": "4th Period",
+    "room": "Room 150"
+  },
+  {
+    "Id": 5,
+    "name": "Chemistry",
+    "subject": "Science",
+    "period": "5th Period",
+    "room": "Lab 302"
+  },
+  {
+    "Id": 6,
+    "name": "Spanish",
+    "subject": "Foreign Language",
+    "period": "6th Period",
+    "room": "Room 220"
+  }
+]

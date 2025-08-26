@@ -1,0 +1,66 @@
+[
+  {
+    "Id": 1,
+    "classId": 1,
+    "title": "Algebra Quiz",
+    "totalPoints": 100,
+    "dueDate": "2024-12-15T00:00:00.000Z",
+    "category": "Quiz"
+  },
+  {
+    "Id": 2,
+    "classId": 1,
+    "title": "Geometry Test",
+    "totalPoints": 150,
+    "dueDate": "2024-12-20T00:00:00.000Z",
+    "category": "Test"
+  },
+  {
+    "Id": 3,
+    "classId": 1,
+    "title": "Homework Assignment 1",
+    "totalPoints": 50,
+    "dueDate": "2024-12-10T00:00:00.000Z",
+    "category": "Homework"
+  },
+  {
+    "Id": 4,
+    "classId": 2,
+    "title": "Essay: Character Analysis",
+    "totalPoints": 200,
+    "dueDate": "2024-12-18T00:00:00.000Z",
+    "category": "Essay"
+  },
+  {
+    "Id": 5,
+    "classId": 2,
+    "title": "Reading Comprehension Quiz",
+    "totalPoints": 75,
+    "dueDate": "2024-12-12T00:00:00.000Z",
+    "category": "Quiz"
+  },
+  {
+    "Id": 6,
+    "classId": 3,
+    "title": "Lab Report: Motion",
+    "totalPoints": 120,
+    "dueDate": "2024-12-16T00:00:00.000Z",
+    "category": "Lab Report"
+  },
+  {
+    "Id": 7,
+    "classId": 3,
+    "title": "Physics Midterm",
+    "totalPoints": 250,
+    "dueDate": "2024-12-22T00:00:00.000Z",
+    "category": "Test"
+  },
+  {
+    "Id": 8,
+    "classId": 4,
+    "title": "WWI Research Project",
+    "totalPoints": 180,
+    "dueDate": "2024-12-25T00:00:00.000Z",
+    "category": "Project"
+  }
+]

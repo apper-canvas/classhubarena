@@ -1,0 +1,102 @@
+[
+  {
+    "Id": 1,
+    "firstName": "Emma",
+    "lastName": "Johnson",
+    "email": "emma.johnson@school.edu",
+    "grade": "10th Grade",
+    "classId": 1,
+    "enrollmentDate": "2024-08-15T00:00:00.000Z",
+    "status": "Active"
+  },
+  {
+    "Id": 2,
+    "firstName": "Michael",
+    "lastName": "Chen",
+    "email": "michael.chen@school.edu",
+    "grade": "11th Grade",
+    "classId": 1,
+    "enrollmentDate": "2024-08-15T00:00:00.000Z",
+    "status": "Active"
+  },
+  {
+    "Id": 3,
+    "firstName": "Sarah",
+    "lastName": "Williams",
+    "email": "sarah.williams@school.edu",
+    "grade": "10th Grade",
+    "classId": 2,
+    "enrollmentDate": "2024-08-15T00:00:00.000Z",
+    "status": "Active"
+  },
+  {
+    "Id": 4,
+    "firstName": "David",
+    "lastName": "Rodriguez",
+    "email": "david.rodriguez@school.edu",
+    "grade": "11th Grade",
+    "classId": 2,
+    "enrollmentDate": "2024-08-15T00:00:00.000Z",
+    "status": "Active"
+  },
+  {
+    "Id": 5,
+    "firstName": "Ashley",
+    "lastName": "Taylor",
+    "email": "ashley.taylor@school.edu",
+    "grade": "9th Grade",
+    "classId": 3,
+    "enrollmentDate": "2024-08-15T00:00:00.000Z",
+    "status": "Active"
+  },
+  {
+    "Id": 6,
+    "firstName": "James",
+    "lastName": "Brown",
+    "email": "james.brown@school.edu",
+    "grade": "12th Grade",
+    "classId": 3,
+    "enrollmentDate": "2024-08-15T00:00:00.000Z",
+    "status": "Active"
+  },
+  {
+    "Id": 7,
+    "firstName": "Jessica",
+    "lastName": "Martinez",
+    "email": "jessica.martinez@school.edu",
+    "grade": "10th Grade",
+    "classId": 4,
+    "enrollmentDate": "2024-08-15T00:00:00.000Z",
+    "status": "Active"
+  },
+  {
+    "Id": 8,
+    "firstName": "Christopher",
+    "lastName": "Davis",
+    "email": "christopher.davis@school.edu",
+    "grade": "11th Grade",
+    "classId": 4,
+    "enrollmentDate": "2024-08-15T00:00:00.000Z",
+    "status": "Inactive"
+  },
+  {
+    "Id": 9,
+    "firstName": "Amanda",
+    "lastName": "Wilson",
+    "email": "amanda.wilson@school.edu",
+    "grade": "9th Grade",
+    "classId": 1,
+    "enrollmentDate": "2024-08-15T00:00:00.000Z",
+    "status": "Active"
+  },
+  {
+    "Id": 10,
+    "firstName": "Ryan",
+    "lastName": "Anderson",
+    "email": "ryan.anderson@school.edu",
+    "grade": "12th Grade",
+    "classId": 2,
+    "enrollmentDate": "2024-08-15T00:00:00.000Z",
+    "status": "Active"
+  }
+]
