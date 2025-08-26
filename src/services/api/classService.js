@@ -60,10 +60,10 @@ const params = {
     try {
 const params = {
         records: [{
-          name: classData.name_c || classData.name,
-          subject: classData.subject_c || classData.subject,
-          period: classData.period_c || classData.period,
-          room: classData.room_c || classData.room
+          name: classData.name,
+          subject: classData.subject,
+          period: classData.period,
+          room: classData.room
         }]
       };
       
