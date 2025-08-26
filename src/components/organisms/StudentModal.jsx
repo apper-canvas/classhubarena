@@ -86,10 +86,10 @@ const StudentModal = ({ isOpen, onClose, student, onSave, classes }) => {
               onChange={(e) => handleChange("email", e.target.value)}
             />
             
-            <FormField label="Grade" required>
+<FormField label="Grade" required>
               <Select
                 value={formData.grade}
-                onChange={(e) => handleChange("grade", e.target.value)}
+                onChange={(value) => handleChange("grade", value)}
               >
                 <option value="">Select Grade</option>
                 <option value="9th Grade">9th Grade</option>
@@ -99,10 +99,10 @@ const StudentModal = ({ isOpen, onClose, student, onSave, classes }) => {
               </Select>
             </FormField>
             
-            <FormField label="Class" required>
+<FormField label="Class" required>
               <Select
                 value={formData.classId}
-                onChange={(e) => handleChange("classId", e.target.value)}
+                onChange={(value) => handleChange("classId", value)}
               >
                 <option value="">Select Class</option>
                 {classes.map((cls) => (
@@ -113,10 +113,10 @@ const StudentModal = ({ isOpen, onClose, student, onSave, classes }) => {
               </Select>
             </FormField>
             
-            <FormField label="Status">
+<FormField label="Status">
               <Select
                 value={formData.status}
-                onChange={(e) => handleChange("status", e.target.value)}
+                onChange={(value) => handleChange("status", value)}
               >
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
