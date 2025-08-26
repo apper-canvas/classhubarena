@@ -4,13 +4,18 @@ import { cn } from "@/utils/cn";
 const Select = React.forwardRef(
   ({ className, children, ...props }, ref) => {
     return (
-      <select
+<select
         className={cn(
           "flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-200",
           className
         )}
         ref={ref}
         {...props}
+        onChange={(e) => {
+          if (props.onChange) {
+            props.onChange(e.target.value);
+          }
+        }}
       >
         {children}
       </select>
