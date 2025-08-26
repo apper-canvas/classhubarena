@@ -8,6 +8,8 @@ import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
 import ApperIcon from "@/components/ApperIcon";
+import Input from "@/components/atoms/Input";
+import Select from "@/components/atoms/Select";
 import { classService } from "@/services/api/classService";
 import { studentService } from "@/services/api/studentService";
 
@@ -18,6 +20,51 @@ const Classes = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    subject: "",
+    period: "",
+    room: ""
+  });
+
+  const handleAddClass = async (e) => {
+    e.preventDefault();
+    
+    // Validation
+    if (!formData.name.trim() || !formData.subject.trim() || !formData.period.trim() || !formData.room.trim()) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    try {
+      const newClass = await classService.create({
+        name: formData.name.trim(),
+        subject: formData.subject.trim(),
+        period: formData.period.trim(),
+        room: formData.room.trim()
+      });
+
+      // Add enrollment count (0 for new class)
+      const classWithEnrollment = { ...newClass, enrollmentCount: 0 };
+      
+      setClasses(prev => [...prev, classWithEnrollment]);
+      setFilteredClasses(prev => [...prev, classWithEnrollment]);
+      
+      // Reset form and close modal
+      setFormData({ name: "", subject: "", period: "", room: "" });
+      setShowAddModal(false);
+      
+      toast.success("Class created successfully!");
+    } catch (err) {
+      toast.error("Failed to create class. Please try again.");
+      console.error("Create class error:", err);
+    }
+  };
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
 
   const loadData = async () => {
     try {
@@ -70,7 +117,7 @@ const Classes = () => {
           <h1 className="text-3xl font-display font-bold text-gray-900">Classes</h1>
           <p className="text-gray-600 mt-1">Manage your classes and course information.</p>
         </div>
-        <Button variant="primary">
+<Button variant="primary" onClick={() => setShowAddModal(true)}>
           <ApperIcon name="Plus" className="h-4 w-4 mr-2" />
           Add Class
         </Button>
@@ -136,6 +183,105 @@ const Classes = () => {
               </CardContent>
             </Card>
           ))}
+        </div>
+      )}
+{/* Add Class Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-display font-semibold text-gray-900">Add New Class</h2>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setShowAddModal(false);
+                    setFormData({ name: "", subject: "", period: "", room: "" });
+                  }}
+                >
+                  <ApperIcon name="X" className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <form onSubmit={handleAddClass} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Class Name
+                  </label>
+                  <Input
+                    placeholder="e.g., Algebra I"
+                    value={formData.name}
+                    onChange={(e) => handleInputChange("name", e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Subject
+                  </label>
+                  <Input
+                    placeholder="e.g., Mathematics"
+                    value={formData.subject}
+                    onChange={(e) => handleInputChange("subject", e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Period
+                  </label>
+                  <Select
+                    value={formData.period}
+                    onChange={(value) => handleInputChange("period", value)}
+                    required
+                  >
+                    <option value="">Select Period</option>
+                    <option value="1st Period">1st Period</option>
+                    <option value="2nd Period">2nd Period</option>
+                    <option value="3rd Period">3rd Period</option>
+                    <option value="4th Period">4th Period</option>
+                    <option value="5th Period">5th Period</option>
+                    <option value="6th Period">6th Period</option>
+                    <option value="7th Period">7th Period</option>
+                    <option value="8th Period">8th Period</option>
+                  </Select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Room
+                  </label>
+                  <Input
+                    placeholder="e.g., Room 101"
+                    value={formData.room}
+                    onChange={(e) => handleInputChange("room", e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="flex space-x-3 pt-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setShowAddModal(false);
+                      setFormData({ name: "", subject: "", period: "", room: "" });
+                    }}
+                    className="flex-1"
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" variant="primary" className="flex-1">
+                    <ApperIcon name="Plus" className="h-4 w-4 mr-2" />
+                    Create Class
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       )}
     </div>
