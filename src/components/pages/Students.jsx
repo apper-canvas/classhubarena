@@ -54,7 +54,7 @@ const Students = () => {
 
 useEffect(() => {
     const filtered = students.filter(student => 
-      `${student.firstName_c || student.firstName} ${student.lastName_c || student.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      `${student.first_name_c || student.firstName} ${student.last_name_c || student.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (student.email_c || student.email).toLowerCase().includes(searchTerm.toLowerCase()) ||
       (student.grade_c || student.grade).toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -74,10 +74,10 @@ useEffect(() => {
   const handleSaveStudent = async (studentData) => {
     try {
 if (selectedStudent) {
-        // Convert field names for database
+// Convert field names for database
         const dbStudentData = {
-          firstName_c: studentData.firstName || studentData.firstName_c,
-          lastName_c: studentData.lastName || studentData.lastName_c,
+          first_name_c: studentData.firstName || studentData.first_name_c,
+          last_name_c: studentData.lastName || studentData.last_name_c,
           email_c: studentData.email || studentData.email_c,
           grade_c: studentData.grade || studentData.grade_c,
           classId_c: studentData.classId || studentData.classId_c,

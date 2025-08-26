@@ -38,9 +38,9 @@ const StudentTable = ({ students, onEdit, onDelete, onView }) => {
                   key={student.Id} 
                   className="border-b border-gray-100 hover:bg-gradient-to-r hover:from-gray-50 hover:to-white transition-colors duration-200"
                 >
-                  <td className="py-4 px-4">
+<td className="py-4 px-4">
                     <div className="font-medium text-gray-900">
-{student.firstName_c || student.firstName} {student.lastName_c || student.lastName}
+                      {student.first_name_c || student.firstName} {student.last_name_c || student.lastName}
                     </div>
                   </td>
                   <td className="py-4 px-4 text-gray-600">
