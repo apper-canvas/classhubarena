@@ -9,11 +9,11 @@ export const classService = {
   async getAll() {
     try {
       const params = {
-        fields: [
-          { field: { Name: "name_c" } },
-          { field: { Name: "subject_c" } },
-          { field: { Name: "period_c" } },
-          { field: { Name: "room_c" } }
+fields: [
+          { field: { Name: "name" } },
+          { field: { Name: "subject" } },
+          { field: { Name: "period" } },
+          { field: { Name: "room" } }
         ]
       };
       
@@ -33,12 +33,12 @@ export const classService = {
 
   async getById(id) {
     try {
-      const params = {
+const params = {
         fields: [
-          { field: { Name: "name_c" } },
-          { field: { Name: "subject_c" } },
-          { field: { Name: "period_c" } },
-          { field: { Name: "room_c" } }
+          { field: { Name: "name" } },
+          { field: { Name: "subject" } },
+          { field: { Name: "period" } },
+          { field: { Name: "room" } }
         ]
       };
       
@@ -58,12 +58,12 @@ export const classService = {
 
   async create(classData) {
     try {
-      const params = {
+const params = {
         records: [{
-          name_c: classData.name_c || classData.name,
-          subject_c: classData.subject_c || classData.subject,
-          period_c: classData.period_c || classData.period,
-          room_c: classData.room_c || classData.room
+          name: classData.name_c || classData.name,
+          subject: classData.subject_c || classData.subject,
+          period: classData.period_c || classData.period,
+          room: classData.room_c || classData.room
         }]
       };
       
@@ -99,18 +99,18 @@ export const classService = {
         Id: id
       };
       
-      // Only include updateable fields
+// Only include updateable fields
       if (classData.name_c !== undefined || classData.name !== undefined) {
-        updateData.name_c = classData.name_c || classData.name;
+        updateData.name = classData.name_c || classData.name;
       }
       if (classData.subject_c !== undefined || classData.subject !== undefined) {
-        updateData.subject_c = classData.subject_c || classData.subject;
+        updateData.subject = classData.subject_c || classData.subject;
       }
       if (classData.period_c !== undefined || classData.period !== undefined) {
-        updateData.period_c = classData.period_c || classData.period;
+        updateData.period = classData.period_c || classData.period;
       }
       if (classData.room_c !== undefined || classData.room !== undefined) {
-        updateData.room_c = classData.room_c || classData.room;
+        updateData.room = classData.room_c || classData.room;
       }
       
       const params = {

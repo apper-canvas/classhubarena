@@ -39,10 +39,10 @@ const [formData, setFormData] = useState({
 
 try {
       const newClass = await classService.create({
-        name_c: formData.name.trim(),
-        subject_c: formData.subject.trim(),
-        period_c: formData.period.trim(),
-        room_c: formData.room.trim()
+        name: formData.name.trim(),
+        subject: formData.subject.trim(),
+        period: formData.period.trim(),
+        room: formData.room.trim()
       });
 
       // Add enrollment count (0 for new class)
